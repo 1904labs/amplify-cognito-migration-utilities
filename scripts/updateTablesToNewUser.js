@@ -1,7 +1,6 @@
-/* eslint-disable guard-for-in */
-/* eslint-disable no-restricted-syntax */
 const AWS = require('aws-sdk');
 const globalAWSConfig = require('../globalAWSConfig');
+const getAllUsers = require('./cognito-utils/getAllUsers');
 
 // Configure the AWS SDK with your credentials
 AWS.config.update(globalAWSConfig);
@@ -10,15 +9,17 @@ AWS.config.update(globalAWSConfig);
 const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
 
 // The ID of the Cognito User Pool you want to retrieve users from
-const userPoolId = 'example-user-pool-ID';
+// @TODO: Enter in your value here
+const USER_POOL_ID = 'example-user-pool-ID';
 
 // Create an instance of the AWS DynamoDB client
 const dynamoDB = new AWS.DynamoDB();
 
 // The name of the DynamoDB table you want to update
-const exampleTableName1 = 'Receipt-example-staging';
-const exampleTableName2 = 'Vehicle-example-staging';
-const exampleTableName3 = 'User-example-staging';
+// @TODO: Enter in your values here
+const EXAMPLE_TABLE_NAME_1 = 'Receipt-example-staging';
+const EXAMPLE_TABLE_NAME_2 = 'Vehicle-example-staging';
+const EXAMPLE_TABLE_NAME_3 = 'User-example-staging';
 
 // Define a function to update the cognitoUsername field for a single entry in the DynamoDB table
 const updateCognitoItem = async (item, newSubID, tableName, fieldName) => {
@@ -85,38 +86,9 @@ const getAllItems = async (users, tableName, fieldName) => {
   });
 };
 
-// Cognito list users pulls about 60 users at a time. This function is needed for more than 60 users
-const getAllUsers = async (params) => {
-  try {
-    // string must not be empty
-    let paginationToken = 'notEmpty';
-    let itemsAll = {
-      Users: [],
-    };
-    while (paginationToken) {
-      const data = await cognitoIdentityServiceProvider
-        .listUsers(params)
-        .promise();
-
-      const { Users } = data;
-      itemsAll = {
-        ...data,
-        ...{ Users: [...itemsAll.Users, ...(Users ? [...Users] : [])] },
-      };
-      paginationToken = data.PaginationToken;
-      if (paginationToken) {
-        params.PaginationToken = paginationToken;
-      }
-    }
-    return itemsAll;
-  } catch (err) {
-    console.error('Unable to scan the cognito pool users. Error JSON:', err);
-  }
-};
-
 const init = async () => {
   const params = {
-    UserPoolId: userPoolId,
+    USER_POOL_ID: USER_POOL_ID,
   };
 
   const allUsers = await getAllUsers(params);
@@ -124,11 +96,11 @@ const init = async () => {
   // Call the getAllItems function to retrieve all entries from the DynamoDB table
   // and update the items with the new subID of the migrated users
   // repeat this for as many tables as needed
-  await getAllItems(allUsers.Users, exampleTableName1, 'userID');
+  await getAllItems(allUsers.Users, EXAMPLE_TABLE_NAME_1, 'userID');
 
-  await getAllItems(allUsers.Users, exampleTableName2, 'userID');
+  await getAllItems(allUsers.Users, EXAMPLE_TABLE_NAME_2, 'userID');
 
-  await getAllItems(allUsers.Users, exampleTableName3, 'userID');
+  await getAllItems(allUsers.Users, EXAMPLE_TABLE_NAME_3, 'userID');
 };
 
 init();

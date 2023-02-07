@@ -1,6 +1,10 @@
 const { copy } = require('copy-dynamodb-table');
 const globalAWSConfig = require('../globalAWSConfig');
 
+// @TODO: Update these to the correct dynamo table names
+const EXAMPLE_SOURCE_TABLE = 'example-source-table';
+const EXAMPLE_DESTINATION_TABLE = 'example-destination-table';
+
 function promiseCopy(data) {
   return new Promise((resolve, reject) => {
     copy(data, function (err, result) {
@@ -28,8 +32,8 @@ async function copyTable(sourceTable, destinationTable) {
 
 async function init() {
   try {
-    await copyTable('example-source-table', 'example-destination-table');
-    // Duplicate the above line for every dynamoDB table you need copied
+    // Duplicate this line for every dynamoDB table you need copied
+    await copyTable(EXAMPLE_SOURCE_TABLE, EXAMPLE_DESTINATION_TABLE);
   } catch (err) {
     console.log('Oh no! Issue copying tables');
   }
