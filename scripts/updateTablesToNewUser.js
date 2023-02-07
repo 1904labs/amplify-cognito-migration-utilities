@@ -46,7 +46,12 @@ const updateCognitoItem = async (item, newSubID, tableName, fieldName) => {
     // Call the DynamoDB updateItem method to update the cognitoUsername field
     await dynamoDB.updateItem(params).promise();
   } catch (err) {
-    console.log('This is a unsuccessful upload', err);
+    console.log(
+      `Unable to update dynamoDB item with ID ${
+        Object.values(item)[idIndex].S
+      }:`,
+      err
+    );
   }
 };
 
