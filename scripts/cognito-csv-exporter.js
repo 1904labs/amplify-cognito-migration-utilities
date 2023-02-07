@@ -10,6 +10,7 @@ AWS.config.update(globalAWSConfig);
 const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
 const userPoolId = 'user-pool-id';
 
+// Cognito paginates users to return 60. We must loop through paginated results to grab all users
 const getAllUsers = async (params) => {
   try {
     // string must not be empty
