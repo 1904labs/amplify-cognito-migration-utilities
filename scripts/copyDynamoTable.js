@@ -1,11 +1,5 @@
 const { copy } = require('copy-dynamodb-table');
-
-const globalAWSConfig = {
-  // AWS Configuration object http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html#constructor-property
-  accessKeyId: 'your_access_key',
-  secretAccessKey: 'your_secret_access_key',
-  region: 'your_region',
-};
+const globalAWSConfig = require('../globalAWSConfig');
 
 function promiseCopy(data) {
   return new Promise((resolve, reject) => {

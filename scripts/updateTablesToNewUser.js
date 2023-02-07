@@ -1,13 +1,10 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 const AWS = require('aws-sdk');
+const globalAWSConfig = require('../globalAWSConfig');
 
 // Configure the AWS SDK with your credentials
-AWS.config.update({
-  accessKeyId: 'your_access_key',
-  secretAccessKey: 'your_secret_access_key',
-  region: 'your_region',
-});
+AWS.config.update(globalAWSConfig);
 
 // Create an instance of the AWS Cognito Identity provider client
 const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
