@@ -1,0 +1,16 @@
+{
+  "name": "utilites",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ryan Talbert @1904labs",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1309.0",
+    "copy-dynamodb-table": "^2.2.1",
+    "csv-writer": "^1.6.0"
+  }
+}
